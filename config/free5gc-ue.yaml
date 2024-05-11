@@ -1,0 +1,80 @@
+# IMSI number of the UE. IMSI = [MCC|MNC|MSISDN] (In total 15 digits)
+supi: 'imsi-208930100007491'
+# Mobile Country Code value of HPLMN
+mcc: '208'
+# Mobile Network Code value of HPLMN (2 or 3 digits)
+mnc: '93'
+# SUCI Protection Scheme : 0 for Null-scheme, 1 for Profile A and 2 for Profile B, 5 for my Profile : Kyber.
+protectionScheme: 5
+# Home Network Public Key for protecting with SUCI Profile E
+homeNetworkPublicKey: '2162b25c0cb727e42f33e4b88b716ade0749cbb45874b638ceac13728995b2976bcb92335b2395e9735bc2585a7bfa8da277b54a5b47c330a62ac281fb9caeda34cfb3219250c08aa7b8314db3521f8275baa16af786ad63527474121c1aa574657cb0ad42005e4c1389041f68f0738264c1143b2f4f3949f8521d1d516793db13737686ae0124647b0a60cc3bb3a772300993e18b2ff5f0189dd98d28943262b1920f97a735967bb3cc6212351438954759f8054161b66e65370220330ce45bc2833e603cc1521b5a5f50bbe7cc3b9b8a509495244c76be35e477290a7aa4f9acdbd57638198a3fea6ca7c976dd29c57634a01d92a7ca555625d931e87c9271cc9bff0a9bc231c3b112a7a663c235501244d2466572a1220019c66524ccd934445098b430736f57330bf04fc6490bb9419613e24857070555d48f68f5a301156a4934b3e5c7afabe332c45297d5e9a7330c4322292306d66c5b059349b60dcd02194132ae14e527ef1c888ee22358c16fcf451cbe932d7bc7592470567db6412d2c72eb957436f0bee9fba8567280174694a8fb6e34694a00267008e103f6c5ab0b363300536cd9093f4ca200418a89f8581fce13676252b0ffb00d990a70bb018c26253397962412791cf6abbb150ca3da14873dcc39c7e52dd432715de94abfe2cc16f2b296726efa29b3de950eeb9567aea14e36e7b9a834c0a927490bab892bf73d8b532154c673334540bd091184eb69b4b5014c389034a36974957db0f2a32d414d3681ab279b265f188660672df4e60cef9769a24c4b3551b12173579953474ef1a13ac371cdc209e6e516ece5069cb4c38153679000896a6aaa7b517aa62b1415bc2963117b0e038b5497becf597de48a6475a2b7f5336813b130a7506f45da4507b211bdba7b310159a294593111b3b884260a1902620c4000018b47c82752710b00967af6a70512a6cf8cba2d07b558cde8993acc6bfa248d5255086751be2cc6ad0cf1bf15dc4c8277c41531ca84a17f9a663f6f92acdc2222ae5b58ebd712ca130d0afc229000b8fa2068c9713cfca11a03e0b8a3a28815133ba70a477f1e3dd6f2b9794f5ed2abfb148c60650ff45fed182ab073229ecf7179'
+# Home Network Public Key ID for protecting with SUCI Profile A
+homeNetworkPublicKeyId: 1
+# Routing Indicator
+routingIndicator: '0000'
+
+# Permanent subscription key
+key: '5122250214c33e723a5dd523fc145fc0'
+# Operator code (OP or OPC) of the UE
+op: '981d464c7c52eb6e5036234984ad0bcf'
+# This value specifies the OP type and it can be either 'OP' or 'OPC'
+opType: 'OPC'
+# Authentication Management Field (AMF) value
+amf: '8000'
+# IMEI number of the device. It is used if no SUPI is provided
+imei: '356938035643803'
+# IMEISV number of the device. It is used if no SUPI and IMEI is provided
+imeiSv: '4370816125816151'
+
+# List of gNB IP addresses for Radio Link Simulation
+gnbSearchList:
+  - 192.168.5.246
+
+# UAC Access Identities Configuration
+uacAic:
+  mps: false
+  mcs: false
+
+# UAC Access Control Class
+uacAcc:
+  normalClass: 0
+  class11: false
+  class12: false
+  class13: false
+  class14: false
+  class15: false
+
+# Initial PDU sessions to be established
+sessions:
+  - type: 'IPv4'
+    apn: 'internet'
+    slice:
+      sst: 0x01
+      sd: 0x010203
+
+# Configured NSSAI for this UE by HPLMN
+configured-nssai:
+  - sst: 0x01
+    sd: 0x010203
+
+# Default Configured NSSAI for this UE
+default-nssai:
+  - sst: 1
+    sd: 010203
+
+# Supported integrity algorithms by this UE
+integrity:
+  IA1: true
+  IA2: false
+  IA3: false
+
+# Supported encryption algorithms by this UE
+ciphering:
+  EA1: false
+  EA2: false
+  EA3: false
+
+# Integrity protection maximum data rate for user plane
+integrityMaxRate:
+  uplink: 'full'
+  downlink: 'full'
