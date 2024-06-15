@@ -154,7 +154,9 @@ class NasMm
     nas::IE5gsMobileIdentity getOrGenerateSuci();
     nas::IE5gsMobileIdentity generateSuci();
     std::string generateSUCIProfileA(const std::string &imsi, const OctetString &hnPublicKey);
-    std::string generateSUCIProfileE(const std::string &imsi, const OctetString &hnPublicKey);
+    std::string generateSUCIProfileE(const std::string &imsi, const OctetString &hnKyberPublicKey); //only Kyber Key is being passed
+    std::string generateSUCIProfileF(const std::string &imsi, const OctetString &hnECCPublicKey , const OctetString &hnKyberPublicKey);
+
     nas::IE5gsMobileIdentity getOrGeneratePreferredId();
 
   private: /* Service */

@@ -113,11 +113,11 @@ kem = OQS_KEM_new(OQS_KEM_alg_kyber_512);
 void key_encaps(const uint8_t *publicKey,uint8_t *sharedSecret, uint8_t *cipherText){
 
 
-	        OQS_KEM *kem = NULL;
-kem = OQS_KEM_new(OQS_KEM_alg_kyber_512);
-        if (kem == NULL) {
-                printf("OQS_KEM_kyber_512 was not enabled at "
-                       "compile-time.\n"); }
+	OQS_KEM *kem = NULL; //create a new KEM client
+    kem = OQS_KEM_new(OQS_KEM_alg_kyber_512);
+    if (kem == NULL) {
+        printf("OQS_KEM_kyber_512 was not enabled at compile-time.\n"); 
+    }
 
     uint8_t *cipher_text = NULL;
 	uint8_t *shared_secret_e = NULL;
@@ -152,7 +152,8 @@ kem = OQS_KEM_new(OQS_KEM_alg_kyber_512);
     memcpy(cipherText, cipher_text,cipher_len);
     memcpy(sharedSecret,shared_secret_e,ss_len);
 
-    cleanup_heap(shared_secret_e,ss_len);
+    
+    cleanup_heap(shared_secret_e,ss_len); 
     cleanup_heap2(cipher_text);
 
 }
