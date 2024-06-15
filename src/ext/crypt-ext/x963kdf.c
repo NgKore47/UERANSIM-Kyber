@@ -19,8 +19,7 @@
   
 //   return result.slice(0, keySize);
 // }
-
-void x963kdf(unsigned char *output, const unsigned char *sharedSecret, const unsigned char *sharedInfo, size_t keySize) 
+void x963kdf(unsigned char *output, const unsigned char *sharedSecret, const unsigned char *sharedInfo, size_t keySize, size_t sharedSecretSize, size_t sharedInfoSize) 
 {
     // int maxCount = ceil(keySize/SHA256_DIGEST_SIZE);
     int outlen = 0;
@@ -37,16 +36,15 @@ void x963kdf(unsigned char *output, const unsigned char *sharedSecret, const uns
     uint8_t result[res_size];
     uint8_t counterBuf[4]; //1, 1 byte each -> total: 4 bytes : 32 bits.
 
-    // printf("Size: %d",sizeof(counterBuf)); 
+    // printf("Size: %d",sizeof(counterBuf));
 
-
-     while (keySize > outlen)
+    while (keySize > outlen)
     {
         sha256_t ss;
         uint8_t hash[SHA256_DIGEST_SIZE];
         
         sha256_init(&ss);
-        sha256_update(&ss, sharedSecret, 32);
+        sha256_update(&ss, sharedSecret,sharedSecretSize); //64 for 64 bytes SharedSecret
         // To be improved in order to deal with Little and Big Endian
         counterBuf[0] = (uint8_t) ((count >> 24) & 0xff);
         counterBuf[1] = (uint8_t) ((count >> 16) & 0xff);
@@ -54,7 +52,7 @@ void x963kdf(unsigned char *output, const unsigned char *sharedSecret, const uns
         counterBuf[3] = (uint8_t) ((count >> 0) & 0xff);
 
         sha256_update(&ss, counterBuf, 4);
-        sha256_update(&ss, sharedInfo, 800); //800 key len
+        sha256_update(&ss, sharedInfo, sharedInfoSize); //important line!
         sha256_final(&ss, hash);
         memcpy(result + (count-1)*SHA256_DIGEST_SIZE, hash, SHA256_DIGEST_SIZE);
 

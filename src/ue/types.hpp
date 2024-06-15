@@ -95,7 +95,8 @@ struct UeConfig
     std::optional<Supi> supi{};
     int protectionScheme;
     int homeNetworkPublicKeyId;
-    OctetString homeNetworkPublicKey{};
+    OctetString homeNetworkECCPublicKey{};
+    OctetString homeNetworkKyberPublicKey{};
     std::optional<std::string> routingIndicator{};
     Plmn hplmn{};
     OctetString key{};

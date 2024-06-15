@@ -39,7 +39,7 @@ int main(){
     printf("\nsize: %ld\n",sizeof(pubKey));
     printf("\nsize: %ld\n",sizeof(pubKey_2));
 
-    x963kdf(buf,ss_2,pubKey_2,keySize);
+    x963kdf(buf,ss_2,pubKey_2,keySize,32,32);
 
     printf("\nThe derived Key is: \n");
 

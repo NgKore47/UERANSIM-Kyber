@@ -553,7 +553,7 @@ static void rijndaelEncrypt(const u32 rk[/*44*/], const u8 pt[16], u8 ct[16])
     PUTU32(ct + 12, s3);
 }
 
-static void *aes_encrypt_init(const u8 *key, size_t len)
+static void *aes_encrypt_init(const u8 *key, size_t len) // u8 = typedef for uint8_t
 {
     u32 *rk;
     if (len != 16)
@@ -594,6 +594,18 @@ static int aes_128_encrypt_block(const u8 *key, const u8 *in, u8 *out)
     return 0;
 }
 
+static int aes_256_encrypt_block(const u8 *key, const u8 *in, u8 *out)
+{
+    void *ctx;
+    ctx = aes_encrypt_init(key, 32);
+    if (ctx == NULL)
+        return -1;
+    aes_encrypt(ctx, in, out);
+    aes_encrypt_deinit(ctx);
+    return 0;
+}
+
+
 /**
  * milenage_f1 - Milenage f1 and f1* algorithms
  * @opc: OPc = 128-bit value derived from OP and K
@@ -613,7 +625,7 @@ int milenage_f1(const u8 *opc, const u8 *k, const u8 *_rand, const u8 *sqn, cons
     /* tmp1 = TEMP = E_K(RAND XOR OP_C) */
     for (i = 0; i < 16; i++)
         tmp1[i] = _rand[i] ^ opc[i];
-    if (aes_128_encrypt_block(k, tmp1, tmp1))
+    if (aes_256_encrypt_block(k, tmp1, tmp1)) //aes256 inplace of aes128
         return -1;
 
     /* tmp2 = IN1 = SQN || AMF || SQN || AMF */
@@ -632,7 +644,7 @@ int milenage_f1(const u8 *opc, const u8 *k, const u8 *_rand, const u8 *sqn, cons
     /* XOR with c1 (= ..00, i.e., NOP) */
 
     /* f1 || f1* = E_K(tmp3) XOR OP_c */
-    if (aes_128_encrypt_block(k, tmp3, tmp1))
+    if (aes_256_encrypt_block(k, tmp3, tmp1))
         return -1;
     for (i = 0; i < 16; i++)
         tmp1[i] ^= opc[i];
@@ -663,7 +675,7 @@ int milenage_f2345(const u8 *opc, const u8 *k, const u8 *_rand, u8 *res, u8 *ck,
     /* tmp2 = TEMP = E_K(RAND XOR OP_C) */
     for (i = 0; i < 16; i++)
         tmp1[i] = _rand[i] ^ opc[i];
-    if (aes_128_encrypt_block(k, tmp1, tmp2))
+    if (aes_256_encrypt_block(k, tmp1, tmp2))
         return -1;
 
     /* OUT2 = E_K(rot(TEMP XOR OP_C, r2) XOR c2) XOR OP_C */
@@ -677,7 +689,7 @@ int milenage_f2345(const u8 *opc, const u8 *k, const u8 *_rand, u8 *res, u8 *ck,
         tmp1[i] = tmp2[i] ^ opc[i];
     tmp1[15] ^= 1; /* XOR c2 (= ..01) */
     /* f5 || f2 = E_K(tmp1) XOR OP_c */
-    if (aes_128_encrypt_block(k, tmp1, tmp3))
+    if (aes_256_encrypt_block(k, tmp1, tmp3))
         return -1;
     for (i = 0; i < 16; i++)
         tmp3[i] ^= opc[i];
@@ -693,7 +705,7 @@ int milenage_f2345(const u8 *opc, const u8 *k, const u8 *_rand, u8 *res, u8 *ck,
         for (i = 0; i < 16; i++)
             tmp1[(i + 12) % 16] = tmp2[i] ^ opc[i];
         tmp1[15] ^= 2; /* XOR c3 (= ..02) */
-        if (aes_128_encrypt_block(k, tmp1, ck))
+        if (aes_256_encrypt_block(k, tmp1, ck))
             return -1;
         for (i = 0; i < 16; i++)
             ck[i] ^= opc[i];
@@ -706,7 +718,7 @@ int milenage_f2345(const u8 *opc, const u8 *k, const u8 *_rand, u8 *res, u8 *ck,
         for (i = 0; i < 16; i++)
             tmp1[(i + 8) % 16] = tmp2[i] ^ opc[i];
         tmp1[15] ^= 4; /* XOR c4 (= ..04) */
-        if (aes_128_encrypt_block(k, tmp1, ik))
+        if (aes_256_encrypt_block(k, tmp1, ik))
             return -1;
         for (i = 0; i < 16; i++)
             ik[i] ^= opc[i];
@@ -719,7 +731,7 @@ int milenage_f2345(const u8 *opc, const u8 *k, const u8 *_rand, u8 *res, u8 *ck,
         for (i = 0; i < 16; i++)
             tmp1[(i + 4) % 16] = tmp2[i] ^ opc[i];
         tmp1[15] ^= 8; /* XOR c5 (= ..08) */
-        if (aes_128_encrypt_block(k, tmp1, tmp1))
+        if (aes_256_encrypt_block(k, tmp1, tmp1))
             return -1;
         for (i = 0; i < 6; i++)
             akstar[i] = tmp1[i] ^ opc[i];
@@ -893,10 +905,10 @@ int milenage_opc_gen(u8 *opc, const u8 *k, const u8 *op)
     int i;
 
     /* Encrypt OP using K */
-    if (aes_128_encrypt_block(k, op, opc))
+    if (aes_256_encrypt_block(k, op, opc))
         return -1;
 
-    /* XOR the resulting Ek(OP) with OP */
+    /* XOR the resulting Ek(OP) with OP */ //Opc length : 128 bits only, but created using aes256.
     for (i = 0; i < 16; i++)
         opc[i] = opc[i] ^ op[i];
 

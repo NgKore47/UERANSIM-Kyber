@@ -16,7 +16,7 @@ extern "C"
 {
 #endif
 
-    void x963kdf(unsigned char *output, const unsigned char *sharedSecret, const unsigned char *sharedInfo, size_t keySize);
+    void x963kdf(unsigned char *output, const unsigned char *sharedSecret, const unsigned char *sharedInfo, size_t keySize, size_t sharedSecretSize, size_t sharedInfoSize);
 
 #ifdef __cplusplus
 }

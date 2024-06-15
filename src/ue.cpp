@@ -154,8 +154,10 @@ static nr::ue::UeConfig *ReadConfigYaml()
         result->protectionScheme = yaml::GetInt32(config, "protectionScheme", 0, 255);
     if (yaml::HasField(config, "homeNetworkPublicKeyId"))
         result->homeNetworkPublicKeyId = yaml::GetInt32(config, "homeNetworkPublicKeyId", 0, 255);
-    if (yaml::HasField(config, "homeNetworkPublicKey"))        
-        result->homeNetworkPublicKey = OctetString::FromHex(yaml::GetString(config, "homeNetworkPublicKey", 64, 2000)); 
+    if (yaml::HasField(config, "homeNetworkECCPublicKey"))        
+        result->homeNetworkECCPublicKey = OctetString::FromHex(yaml::GetString(config, "homeNetworkECCPublicKey", 64, 2000)); 
+    if (yaml::HasField(config, "homeNetworkKyberPublicKey"))        
+        result->homeNetworkKyberPublicKey = OctetString::FromHex(yaml::GetString(config, "homeNetworkKyberPublicKey", 64, 2000)); 
     if (yaml::HasField(config, "imei"))
         result->imei = yaml::GetString(config, "imei", 15, 15);
     if (yaml::HasField(config, "imeiSv"))
@@ -356,7 +358,8 @@ static nr::ue::UeConfig *GetConfigByUe(int ueIndex)
     c->imeiSv = g_refConfig->imeiSv;
     c->supi = g_refConfig->supi;
     c->protectionScheme = g_refConfig->protectionScheme;
-    c->homeNetworkPublicKey = g_refConfig->homeNetworkPublicKey.copy();
+    c->homeNetworkECCPublicKey= g_refConfig->homeNetworkECCPublicKey.copy();
+    c->homeNetworkKyberPublicKey= g_refConfig->homeNetworkKyberPublicKey.copy();
     c->homeNetworkPublicKeyId = g_refConfig->homeNetworkPublicKeyId;
     c->routingIndicator = g_refConfig->routingIndicator;
     c->tunName = g_refConfig->tunName;

@@ -7,6 +7,17 @@
 
 #ifdef __cplusplus
 
+#define KYBER_SHARED_SIZE 32
+#define KYBER512 1
+
+#ifdef KYBER512
+
+    #define KYBER_PRIVATE_SIZE 1632
+    #define KYBER_PUBLIC_SIZE 800
+    #define KYBER_CIPHER_SIZE 768
+
+#endif
+
 extern "C"{
 #endif
 
